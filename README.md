@@ -1,2 +1,2 @@
-# AndroidRRO-Target
-Target app which can be overlayed
+# AndroidRRO
+Change the value of an app's resources at runtime
