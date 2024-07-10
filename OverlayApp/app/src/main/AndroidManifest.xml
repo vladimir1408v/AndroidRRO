@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.iridium.panel.rro">
 
     <overlay
-        android:isStatic="false"
-        android:priority="1"
-        android:targetPackage="com.sap.dev.rro.target" />
-
+        android:isStatic="true"
+        android:priority="9999"
+        android:targetName="SettingsOverlay"
+        android:targetPackage="com.android.settings" />
 </manifest>

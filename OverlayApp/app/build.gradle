@@ -3,11 +3,19 @@ plugins {
 }
 
 android {
-    namespace 'com.sap.dev.rro.overlay'
+    signingConfigs {
+        release {
+        storeFile file('D:\\git\\i3_android\\keys\\ProKey.jks')
+            storePassword 'iridiumandroidv2'
+            keyPassword 'iridiumandroidv2'
+            keyAlias 'iridium'
+        }
+    }
+    namespace 'com.iridium.panel.rro'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.sap.dev.rro.overlay"
+        applicationId "com.iridium.panel.rro"
         minSdk 30
         targetSdk 33
         versionCode 1
@@ -18,6 +26,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -28,4 +37,33 @@ android {
 
 dependencies {
 
+}
+
+task deployToDevice {
+    doLast {
+        def commands = [
+                'adb root',
+                'adb remount',
+                'adb push D:\\git\\AndroidRRO\\OverlayApp\\app\\build\\outputs\\apk\\release\\app-release.apk /vendor/overlay',
+                'adb reboot'
+        ]
+
+        def output = new StringBuilder()
+
+        commands.each { command ->
+            def process = command.execute()
+            process.waitFor()
+
+            def processOutput = process.text
+            output.append("Start command: $command\n")
+            output.append("Output: $processOutput\n")
+            output.append("------------------------\n")
+        }
+
+        println output.toString()
+    }
+}
+
+afterEvaluate {
+    assembleRelease.finalizedBy deployToDevice
 }
